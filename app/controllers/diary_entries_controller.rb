@@ -1,13 +1,15 @@
 class DiaryEntriesController < ApplicationController
+  before_action :authenticate_user!, only: [:new, :create]
+
   def index
     if current_user
-      @current_month_entries = DiaryEntry.includes(:mood).where(entry_date: Date.today.beginning_of_month..Date.today.end_of_month)
+      @current_month_entries = current_user.diary_entries.where(entry_date: Time.now.beginning_of_month..Time.now.end_of_month)
     else
       @current_month_entries = []
     end
 
     if current_user
-      @todays_entries = DiaryEntry.where(entry_date: Date.today).where.not(user_id: current_user.id).order("RANDOM()").limit(6)
+      @todays_entries = DiaryEntry.where(entry_date: Date.today).order("RANDOM()").limit(6)
     else
       @todays_entries = DiaryEntry.where(entry_date: Date.today).order("RANDOM()").limit(6)
     end
@@ -27,6 +29,11 @@ class DiaryEntriesController < ApplicationController
   end
 
   def create
+    unless current_user
+      flash[:alert] = "Please log in to create a mood entry."
+      redirect_to new_user_session_path
+    end
+    
     # 找到今天是否已经有日记（按 user_id 和 entry_date 匹配）
     existing_entry = DiaryEntry.find_by(user_id: current_user.id, entry_date: Date.today)
   
@@ -35,6 +42,7 @@ class DiaryEntriesController < ApplicationController
       if existing_entry.update(diary_entry_params)
         redirect_to existing_entry, notice: "Today's mood entry has been updated."
       else
+        @moods = Mood.all
         render :new
       end
     else
@@ -63,6 +71,7 @@ class DiaryEntriesController < ApplicationController
 
   def edit
     @diary_entry = DiaryEntry.find(params[:id])
+    @moods = Mood.all
   end
 
   def update
@@ -81,6 +90,11 @@ class DiaryEntriesController < ApplicationController
   end
 
   def new
+    unless current_user
+      flash[:alert] = "Please log in to create a mood entry."
+      redirect_to new_user_session_path
+    end
+    
     @diary_entry = DiaryEntry.new(entry_date: Date.today, user_id: current_user&.id)
     @moods = Mood.all
   end

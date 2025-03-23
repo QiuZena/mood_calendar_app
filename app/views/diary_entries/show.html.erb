@@ -1,22 +1,59 @@
-<h1>Diary Entry</h1>
+<div class="diary-entry-wrapper">
+  <h1>Diary Entry</h1>
 
-<p><strong>Mood:</strong> <%= @diary_entry.mood.name %></p>
+  <p><strong>Mood:</strong>
+    <% if @diary_entry.mood.icon.present? %>
+      <%= image_tag asset_path(@diary_entry.mood.icon), size: "20x20", alt: @diary_entry.mood.name %>
+    <% end %>
+    <%= @diary_entry.mood.name %>
+  </p>
 
-<p><strong>Content:</strong> <%= @diary_entry.content.presence || "No message." %></p>
 
-<% if @diary_entry.image.attached? %>
-  <div class="entry-image">
-    <%= image_tag @diary_entry.image.variant(resize_to_limit: [400, 400]) %>
+
+    <p><strong>Content:</strong> <%= @diary_entry.content.presence || "No message." %></p>
+    <div style="text-align: center;">
+      <% if @diary_entry.image.attached? %>
+        <div class="entry-image">
+          <%= image_tag @diary_entry.image.variant(resize_to_limit: [400, 400]) %>
+        </div>
+      <% else %>
+        <p><em>No image uploaded.</em></p>
+      <% end %>
+    </div>
+  
+
+
+
+  <!-- Likes -->
+  <p>❤️ <%= @diary_entry.likes.count %> Likes  </p>
+  <div style="text-align: center;">
+    <% if current_user && @diary_entry.likes.exists?(user: current_user) %>
+      <%= button_to "Unlike", diary_entry_like_path(@diary_entry, @diary_entry.likes.find_by(user: current_user)), method: :delete %>
+    <% else %>
+      <%= button_to "Like", diary_entry_likes_path(@diary_entry), method: :post %>
+    <% end %>
   </div>
-<% else %>
-  <p><em>No image uploaded.</em></p>
-<% end %>
 
-<p>
-  <strong>User ID:</strong>
-  <%= @diary_entry.user_id %>
-</p>
 
-<%= link_to "Edit", edit_diary_entry_path(@diary_entry) %> |
-<%= link_to "Back", diary_entries_path %>
 
+
+  <!-- Comments -->
+  <p>Comments:</p>
+  <div style="text-align: center;">
+    <% @diary_entry.comments.each do |comment| %>
+      <p><strong><%= comment.user.username %>:</strong> <%= comment.content %></p>
+    <% end %>
+  </div>
+
+  <!-- Comment Form -->
+  <div style="text-align: center;">
+    <% if current_user %>
+      <%= form_with url: diary_entry_comments_path(@diary_entry), method: :post, local: true do |f| %>
+        <%= f.text_field :content, placeholder: "Leave a comment..." %>
+        <%= f.submit "Comment" %>
+      <% end %>
+    <% end %>
+    <%= link_to "Edit", edit_diary_entry_path(@diary_entry) %> |
+    <%= link_to "Back", diary_entries_path %>
+  </div>
+</div>

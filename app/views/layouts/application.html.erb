@@ -2,6 +2,12 @@
 <html>
 
   <head>
+    <%= javascript_include_tag "application", "data-turbo-track": "reload", defer: true %>
+    <%= javascript_importmap_tags %>
+
+    
+
+
     <title>MoodCalendarApp</title>
     <meta name="viewport" content="width=device-width,initial-scale=1">
     <%= csrf_meta_tags %>
@@ -14,15 +20,24 @@
   </head>
 
   <body>
+    <% if flash[:alert] %>
+      <script>
+        alert("<%= flash[:alert] %>");
+      </script>
+    <% end %>
     <header>
       <% if user_signed_in? %>
-        Logged in as <%= current_user.email %> |
-        <%= link_to "Logout", destroy_user_session_path, method: :delete %>
+        <span>
+          Logged in as <%= current_user.email %> |
+          <%= button_to "Logout", destroy_user_session_path, method: :delete, form_class: "logout-form", class: "styled-button", form: { style: "display: inline;" } %>
+        </span>
       <% else %>
         <%= link_to "Sign up", new_user_registration_path %> |
         <%= link_to "Login", new_user_session_path %>
       <% end %>
     </header>
+    <div class="container">
     <%= yield %>
+      </div>
   </body>
 </html>
