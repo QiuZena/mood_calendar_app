@@ -1,10 +1,27 @@
 class DiaryEntriesController < ApplicationController
   def index
-    # @diary_entries = DiaryEntry.all
-    @current_month_entries = DiaryEntry.includes(:mood).where(entry_date: Date.today.beginning_of_month..Date.today.end_of_month)
+    if current_user
+      @current_month_entries = DiaryEntry.includes(:mood).where(entry_date: Date.today.beginning_of_month..Date.today.end_of_month)
+    else
+      @current_month_entries = []
+    end
 
-    # @todays_entries = DiaryEntry.where(entry_date: Date.today).where.not(user_id: current_user.id)
-    @todays_entries = DiaryEntry.includes(:user, :mood, image_attachment: :blob).where(entry_date: Date.today)
+    if current_user
+      @todays_entries = DiaryEntry.where(entry_date: Date.today).where.not(user_id: current_user.id).order("RANDOM()").limit(6)
+    else
+      @todays_entries = DiaryEntry.where(entry_date: Date.today).order("RANDOM()").limit(6)
+    end
+  
+    # @moods = Mood.all
+    # # @diary_entries = DiaryEntry.all
+    # @current_month_entries = DiaryEntry.includes(:mood).where(entry_date: Date.today.beginning_of_month..Date.today.end_of_month)
+
+    # # @todays_entries = DiaryEntry.where(entry_date: Date.today).where.not(user_id: current_user.id)
+    # # @todays_entries = DiaryEntry.includes(:user, :mood, image_attachment: :blob).where(entry_date: Date.today)
+    # @todays_entries = DiaryEntry.where(entry_date: Date.today).includes(:user, :mood, :comments)
+    #   .order(created_at: :desc)
+    #   .limit(20)
+    #   .sample(6)
 
     @moods = Mood.all
   end

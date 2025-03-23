@@ -24,7 +24,7 @@
     <% @moods.each do |mood| %>
       <label class="mood-option">
         <%= form.radio_button :mood_id, mood.id, id: "mood_#{mood.id}" %>
-        <%= image_tag mood.icon, size: "40x40", alt: mood.name %><br>
+        <%= image_tag asset_path(mood.icon), size: "40x40", alt: mood.name %><br>
         <span><%= mood.name %></span>
       </label>
     <% end %>

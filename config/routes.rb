@@ -1,4 +1,8 @@
 # Rails.application.routes.draw do
+  # get 'comments/create'
+  # get 'comments/destroy'
+  # get 'likes/create'
+  # get 'likes/destroy'
   
 #   get 'users/index'
 #   get 'users/new'
@@ -28,7 +32,10 @@ Rails.application.routes.draw do
   devise_for :users
   root "diary_entries#index"  # 设置首页
 
-  resources :diary_entries
+  resources :diary_entries do
+    resources :likes, only: [:create, :destroy]
+    resources :comments, only: [:create, :destroy]
+  end
 
   # Rails 的 health check 不用动
   get "up" => "rails/health#show", as: :rails_health_check
