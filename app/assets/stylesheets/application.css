@@ -1,0 +1,174 @@
+/*
+ * This is a manifest file that'll be compiled into application.css, which will include all the files
+ * listed below.
+ *
+ * Any CSS (and SCSS, if configured) file within this directory, lib/assets/stylesheets, or any plugin's
+ * vendor/assets/stylesheets directory can be referenced here using a relative path.
+ *
+ * You're free to add application-wide styles to this file and they'll appear at the bottom of the
+ * compiled file so the styles you add here take precedence over styles defined in any other CSS
+ * files in this directory. Styles in this file should be added after the last require_* statement.
+ * It is generally better to create a new file per style scope.
+ *
+ *= require_tree .
+ *= require_self
+ */
+/* app/assets/stylesheets/application.css */
+body {
+  font-family: 'Nunito', sans-serif;
+  background-color: #fff9ed;
+  color: #333;
+  padding: 20px;
+}
+
+a {
+  color: #5c7c9a;
+  text-decoration: none;
+}
+
+a:hover {
+  text-decoration: underline;
+}
+
+.mood-card {
+  display: inline-block;
+  border: 1px solid #ddd;
+  padding: 10px;
+  margin: 5px;
+  border-radius: 10px;
+  text-align: center;
+  transition: box-shadow 0.3s;
+  box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+}
+  
+  
+.others-mood {
+  margin-top: 20px;
+}
+  
+.user-mood {
+  padding: 5px;
+  border-bottom: 1px solid #eee;
+}
+  
+.mood-selection {
+  display: flex;
+  gap: 15px;
+  margin-bottom: 20px;
+  flex-wrap: wrap;
+}
+  
+.mood-option {
+  border: 2px solid transparent;
+  border-radius: 10px;
+  padding: 10px;
+  text-align: center;
+  cursor: pointer;
+  transition: border 0.3s ease;
+}
+  
+.mood-option input[type="radio"] {
+  display: none;
+}
+  
+.mood-option img {
+  display: block;
+  margin: 0 auto 5px;
+}
+  
+.mood-option input[type="radio"]:checked + img {
+  border: 3px solid #007bff;
+  border-radius: 50%;
+}
+  
+.mood-option:hover {
+  border: 2px solid #ccc;
+}
+
+.calendar-cell {
+  border: 1px solid #e0d6c3;
+  padding: 8px;
+  min-height: 90px;
+  height: 100%;
+  border-radius: 8px;
+  background-color: #ffffff;
+  box-shadow: 0 1px 3px rgba(0,0,0,0.04);
+  box-sizing: border-box; /* 确保 padding 不撑开高度 */
+}
+
+.date-number {
+  font-weight: bold;
+  color: #555;
+  margin-bottom: 5px;
+}
+  
+.mood-entries img {
+  margin-right: 3px;
+}
+  
+
+
+.calendar th {
+  text-align: center;
+  padding: 10px;
+  background-color: #f0f0f0;
+  font-weight: bold;
+  border-bottom: 1px solid #ccc;
+}
+
+.calendar {
+  width: 100%;
+  table-layout: fixed;
+}
+
+.calendar td {
+  width: 14.28%;         /* ← 一周 7 天 */
+  height: 100px;         /* ← 高度和 .calendar-cell 一致 */
+  padding: 0;
+}
+
+@media (max-width: 768px) {
+  body {
+    padding: 15px;
+  }
+
+  .calendar {
+    font-size: 13px;
+  }
+
+  .calendar td {
+    height: auto;
+    padding: 2px;
+  }
+  
+  .calendar-cell {
+    min-height: 60px;
+    height: auto;
+    font-size: 13px;
+  }
+  
+
+  .mood-cards {
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .mood-card {
+    width: 100%;
+    max-width: 300px;
+    margin: 5px 0;
+  }
+
+  .user-mood {
+    font-size: 14px;
+  }
+
+  .mood-entries img {
+    width: 18px;
+    height: 18px;
+  }
+
+  .calendar td {
+    height: auto;
+  }
+}

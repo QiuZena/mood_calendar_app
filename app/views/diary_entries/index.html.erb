@@ -1,0 +1,58 @@
+<h1>All Diary Entries</h1>
+
+<%= link_to "New Entry", new_diary_entry_path %>
+
+<h2>This Month's Mood Calendar</h2>
+<%= month_calendar(attribute: :entry_date, events: @current_month_entries, class: "calendar") do |date, entries| %>
+  <div class="calendar-cell">
+    <div class="date-number"><%= date.day %></div>
+
+    <div class="mood-entries">
+      <% entries.each do |entry| %>
+        <% if entry.mood.present? && entry.mood.icon.present? %>
+          <%= link_to image_tag(asset_path(entry.mood.icon), size: "20x20"), diary_entry_path(entry) %>
+        <% else %>
+          <%= link_to "View", diary_entry_path(entry) %>
+        <% end %>
+
+      <% end %>
+    </div>
+  </div>
+<% end %>
+
+
+
+<h2>How do you feel today?</h2>
+<div class="mood-cards">
+  <% @moods.each do |mood| %>
+    <%= link_to new_diary_entry_path(mood_id: mood.id), class: "mood-card" do %>
+      <%= image_tag asset_path(mood.icon), size: "40x40" %>
+      <span><%= mood.name %></span>
+    <% end %>
+  <% end %>
+</div>
+
+<h2>Today's Mood from Others</h2>
+
+<div class="others-mood">
+  <% @todays_entries.each do |entry| %>
+    <div class="user-mood">
+      <strong><%= entry.user.username %></strong>:
+      <%= image_tag entry.mood.icon, size: "20x20" if entry.mood.icon.present? %>
+      <span><%= entry.mood.name %></span>
+
+      <% if entry.content.present? %>
+        <p><%= entry.content %></p>
+      <% end %>
+
+      <% if entry.image.attached? %>
+        <div class="entry-image">
+          <%= image_tag entry.image.variant(resize_to_limit: [200, 200]) %>
+        </div>
+      <% end %>
+    </div>
+  <% end %>
+</div>
+
+
+

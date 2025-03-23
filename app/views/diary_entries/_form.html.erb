@@ -1,0 +1,49 @@
+<% if diary_entry.errors.any? %>
+  <div class="error-messages" style="color: red;">
+    <h4><%= pluralize(diary_entry.errors.count, "error") %> prevented this entry from being saved:</h4>
+    <ul>
+      <% diary_entry.errors.full_messages.each do |msg| %>
+        <li><%= msg %></li>
+      <% end %>
+    </ul>
+  </div>
+<% end %>
+
+
+<%= form_with(model: diary_entry, local: true, html: { multipart: true }) do |form| %>
+
+
+  <%= form.hidden_field :entry_date, value: Date.today %>
+
+  <% if current_user %>
+    <%= form.hidden_field :user_id, value: current_user.id %>
+  <% end %>
+
+  <h3>Select your mood:</h3>
+  <div class="mood-selection">
+    <% @moods.each do |mood| %>
+      <label class="mood-option">
+        <%= form.radio_button :mood_id, mood.id, id: "mood_#{mood.id}" %>
+        <%= image_tag mood.icon, size: "40x40", alt: mood.name %><br>
+        <span><%= mood.name %></span>
+      </label>
+    <% end %>
+  </div>
+
+
+  <div>
+    <%= form.label :content, "Write something (optional)" %><br>
+    <%= form.text_area :content %>
+  </div>
+
+  <div>
+    <%= form.label :image, "Upload Image (optional)" %><br>
+    <%= form.file_field :image %>
+  </div>
+
+
+  <div>
+    <%= form.submit "Create Diary Entry" %>
+  </div>
+
+<% end %>
