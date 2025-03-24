@@ -1,7 +1,6 @@
 <h1>New Diary Entry</h1>
 
 <div class="form-wrapper">
-#   <%= render 'form', diary_entry: @diary_entry, moods: @moods %>
     <%= render partial: "form", locals: { diary_entry: @diary_entry, moods: @moods } %>
 
 
