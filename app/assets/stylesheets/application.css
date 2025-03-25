@@ -78,6 +78,22 @@ p{
   background-color: #e0f0ff;
 }
 
+.site-logo {
+  display: inline-block;
+  padding: 0.5rem 1rem;
+  font-size: 24px;
+  font-weight: bold;
+  color: #7a5c39;
+  text-decoration: none;
+}
+.site-logo:hover {
+  background-color: #fff3d0;
+  border-radius: 8px;
+}
+
+.hidden-radio {
+  display: none;
+}
 
 /* Mood Cards */
 .mood-cards {
@@ -101,11 +117,37 @@ p{
   flex-direction: column;
   align-items: center;
   justify-content: center;
+  cursor: pointer;
+  background-color: #fff;
 }
 
+
 .mood-card:hover {
-  transform: scale(1.05);
-  box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+}
+
+
+.hidden-radio:checked + img,
+.hidden-radio:checked ~ .mood-name {
+  filter: brightness(1.1);
+}
+
+.hidden-radio:checked ~ .mood-name::after {
+  content: "✓";
+  margin-left: 6px;
+  color: #007bff;
+  font-weight: bold;
+}
+
+/* ✅ label 选中高亮边框（核心） */
+.hidden-radio:checked ~ * {
+  border-color: #007bff;
+}
+
+.mood-card:has(.hidden-radio:checked) {
+  border-color: #007bff;
+  background-color: #f0f8ff;
+  box-shadow: 0 0 8px rgba(0, 123, 255, 0.3);
 }
 
 .mood-card span {

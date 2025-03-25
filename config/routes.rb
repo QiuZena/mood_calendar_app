@@ -18,6 +18,8 @@
 #   get 'diary_entries/edit'
 #   get 'diary_entries/update'
 #   get 'diary_entries/destroy'
+
+
 #   # Define your application routes per the DSL in https://guides.rubyonrails.org/routing.html
 
 #   # Reveal health status on /up that returns 200 if the app boots with no exceptions, otherwise 500.
@@ -30,7 +32,9 @@
 
 Rails.application.routes.draw do
   devise_for :users
+  get 'profile', to: 'users#profile', as: 'user_profile'
   root "diary_entries#index"  # 设置首页
+
 
   resources :diary_entries do
     resources :likes, only: [:create, :destroy]

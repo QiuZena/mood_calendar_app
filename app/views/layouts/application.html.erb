@@ -22,16 +22,26 @@
         alert("<%= flash[:alert] %>");
       </script>
     <% end %>
-    <header>
-      <% if user_signed_in? %>
-        <span>
-          Logged in as <%= current_user.email %> |
-          <%= button_to "Logout", destroy_user_session_path, method: :delete, form_class: "logout-form", class: "styled-button", form: { style: "display: inline;" } %>
-        </span>
-      <% else %>
-        <%= link_to "Sign up", new_user_registration_path %> |
-        <%= link_to "Login", new_user_session_path %>
-      <% end %>
+    <header style="display: flex; justify-content: space-between; align-items: center; background-color: #fffaf0; padding: 1rem 2rem;">
+
+      <div>
+        <%= link_to root_path, style: "text-decoration: none; display: block; padding: 0.5rem 1rem; font-size: 24px; font-weight: bold; color: #7a5c39;" do %>
+          📘 Mood Calendar
+        <% end %>
+      </div>
+      <div style="display: flex; gap: 1rem; align-items: center;">
+        <% if user_signed_in? %>
+          <span>
+            Logged in as <%= link_to current_user.email, user_profile_path, class: "nav-user" %> |
+            <%= button_to "Logout", destroy_user_session_path, method: :delete, form_class: "logout-form", class: "styled-button", form: { style: "display: inline;" } %>
+
+            
+          </span>
+        <% else %>
+          <%= link_to "Sign up", new_user_registration_path %> |
+          <%= link_to "Login", new_user_session_path %>
+        <% end %>
+      </div>
     </header>
     <div class="container">
       <% unless user_signed_in? || devise_controller? %>

@@ -1,0 +1,64 @@
+<div class="container" style="background-color: #fffaf0; padding: 2rem; border-radius: 12px;">
+
+  <!-- 👤 个人信息区 -->
+  <div class="user-info" style="text-align: center; margin-bottom: 2rem;">
+    <h2 style="margin-bottom: 0.5rem;"><%= @user.username || @user.email.split('@').first %>’s Profile</h2>
+    <p style="margin: 0.2rem;">📧 Email: <%= @user.email %></p>
+    <p style="margin: 0.2rem;">📅 You've shared your mood on <strong><%= @days_count %></strong> different days!</p>
+  </div>
+
+  <!-- Mood record -->
+  <div class="mood-grid-row">
+    <% @entries.each do |entry| %>
+      <div class="user-mood-card">
+        <div style="font-size: 15px; color: #8C7A6B;"><%= entry.entry_date.strftime('%Y-%m-%d') %></div>
+        <div style="display: flex; align-items: center; flex-wrap: wrap; gap: 0.5rem;">
+          
+          <strong style="white-space: nowrap;"><%= entry.user.username %>:</strong>
+      
+          <!-- Emoji -->
+          <% if entry.mood&.icon.present? %>
+            <%= image_tag entry.mood.icon, size: "20x20", style: "width: 20px; height: 20px; object-fit: contain; display: inline-block;" %>
+          <% end %>
+          
+          <% if entry.content.present? %>
+            <p class="clamped-text"><%= entry.content %></p>
+          <% end %>
+        </div>
+
+        <% if entry.image.attached? %>
+          <div class="image-wrapper" data-action="click->image-modal#open">
+            <%= image_tag entry.image.variant(resize_to_fill: [300, 400]) %>
+          </div>
+        <% end %>
+
+        <% if entry.likes.any? %>
+          <p><strong>❤️ <%= entry.likes.count %> Likes</strong></p>
+        <% end %>
+
+        <% if entry.comments.any? %>
+          <div class="comments">
+            <div style="display: flex; align-items: center; flex-wrap: wrap; gap: 0.5rem;">  
+              <strong>Comments:</strong>
+              <% entry.comments.each do |comment| %>
+                <div data-controller="expandable"  style="display: flex; align-items: center; gap: 0.25rem;">
+                  <p data-expandable-target="content" class="clamped-text"<strong><%= comment.user.username %>:</strong> <%= comment.content %></p>
+                  <button data-action="click->expandable#toggle" data-expandable-target="toggle" class="text-blue-500 text-sm hover:underline hidden" style="background: none; border: none; padding: 0; cursor: pointer;">More</button>
+                </div>
+
+              <% end %>
+            </div>
+          </div>
+        <% end %>
+        <% if current_user %>
+          <%= form_with url: diary_entry_comments_path(entry), method: :post, local: true do |f| %>
+            <%= f.text_field :content, placeholder: "Leave a comment..." %>
+            <%= f.submit "Comment" %>
+          <% end %>
+        <% end %>
+        
+
+      </div>
+    <% end %>
+  </div>
+</div>
