@@ -36,9 +36,13 @@ Rails.application.routes.draw do
   root "diary_entries#index"  # 设置首页
 
 
+
   resources :diary_entries do
     resources :likes, only: [:create, :destroy]
     resources :comments, only: [:create, :destroy]
+    member do
+      delete :remove_image
+    end
   end
 
   # Rails 的 health check 不用动

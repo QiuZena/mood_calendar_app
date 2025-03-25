@@ -99,7 +99,12 @@ class DiaryEntriesController < ApplicationController
     @moods = Mood.all
   end
   
+  def remove_image
+    @diary_entry = DiaryEntry.find(params[:id])
+    @diary_entry.image.purge if @diary_entry.image.attached?
   
+    redirect_to edit_diary_entry_path(@diary_entry), notice: "Image has been deleted."
+  end
 
   private
 

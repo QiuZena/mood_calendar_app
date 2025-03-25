@@ -9,7 +9,6 @@
   </p>
 
 
-
     <p><strong>Content:</strong> <%= @diary_entry.content.presence || "No message." %></p>
     <div style="text-align: center;">
       <% if @diary_entry.image.attached? %>
@@ -21,8 +20,6 @@
       <% end %>
     </div>
   
-
-
 
   <!-- Likes -->
   <p>❤️ <%= @diary_entry.likes.count %> Likes  </p>
@@ -53,7 +50,6 @@
         <%= f.submit "Comment" %>
       <% end %>
     <% end %>
-    <%= link_to "Edit", edit_diary_entry_path(@diary_entry) %> |
-    <%= link_to "Back", diary_entries_path %>
+    <%= link_to "Edit", edit_diary_entry_path(@diary_entry) %>
   </div>
 </div>

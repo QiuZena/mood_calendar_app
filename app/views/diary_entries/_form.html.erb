@@ -35,18 +35,34 @@
   </div>
   
   <div>
-    <%= form.label :content, "Write something (optional)" %><br>
-    <%= form.text_area :content %>
+    <p><%= form.label :content, "Write something (optional)" %><br>
+    <%= form.text_area :content %></p>
   </div>
 
-  <div>
-    <%= form.label :image, "Upload Image (optional)" %><br>
-    <%= form.file_field :image %>
+  <div style="margin-bottom: 1.5rem;">
+    <% if diary_entry.persisted? && diary_entry.image.attached? %>
+      <div style="text-align: center;">
+        <p style="margin-bottom: 0.5rem;">Current Image:</p>
+        <%= image_tag diary_entry.image.variant(resize_to_limit: [300, 300]), style: "border-radius: 8px;" %>
+
+        <div style="margin-top: 0.5rem;">
+
+          <label for="diary_entry_image" class="replace-image-button" style="margin-left: 10px; cursor: pointer;">
+            ✏️ Replace
+            <%= form.file_field :image, style: "display: none;" %>
+          </label>
+        </div>
+      </div>
+    <% else %>
+      <p><%= form.label :image, "Upload Image (optional)" %></p><br>
+      <p><%= form.file_field :image %></p>
+    <% end %>
   </div>
 
 
+
   <div>
-    <%= form.submit "Create Diary Entry" %>
+    <p><%= form.submit "Create" %></p>
   </div>
 
 <% end %>
