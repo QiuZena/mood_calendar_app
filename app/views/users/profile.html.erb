@@ -51,7 +51,7 @@
           </div>
         <% end %>
         <% if current_user %>
-          <%= form_with url: diary_entry_comments_path(entry), method: :post, local: true do |f| %>
+          <%= form_with url: diary_entry_comments_path(entry), method: :post,data: { turbo: true }, local: true do |f| %>
             <%= f.text_field :content, placeholder: "Leave a comment..." %>
             <%= f.submit "Comment" %>
           <% end %>

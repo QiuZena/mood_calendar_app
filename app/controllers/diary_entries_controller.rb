@@ -29,11 +29,27 @@ class DiaryEntriesController < ApplicationController
   end
 
   def create
+
     unless current_user
       flash[:alert] = "Please log in to create a mood entry."
       redirect_to new_user_session_path
+      return
     end
-    
+    @diary_entry = DiaryEntry.new(diary_entry_params)
+
+    if @diary_entry.image.blank? && @diary_entry.content.present?
+      @diary_entry.generate_text_image!
+    end
+  
+    if @diary_entry.save
+      redirect_to @diary_entry, notice: "Mood entry created!"
+      return
+    else
+      @moods = Mood.all
+      render :new
+      return
+    end
+
     # 找到今天是否已经有日记（按 user_id 和 entry_date 匹配）
     existing_entry = DiaryEntry.find_by(user_id: current_user.id, entry_date: Date.today)
   
@@ -109,8 +125,9 @@ class DiaryEntriesController < ApplicationController
   private
 
   def diary_entry_params
-    params.require(:diary_entry).permit(:content, :mood_id, :image)
+    params.require(:diary_entry).permit(:user_id, :entry_date, :mood_id, :content, :image)
   end
   
   
 end
+

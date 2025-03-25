@@ -71,3 +71,4 @@ gem "simple_calendar"
 
 gem "devise"
 
+gem 'mini_magick'
