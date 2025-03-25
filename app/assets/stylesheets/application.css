@@ -62,6 +62,23 @@ h1, h2, h3, h4 {
 p{
   text-align: center;
 }
+/* Top login button */
+.auth-button {
+  font-size: 20px;        
+  font-weight: bold;       
+  color: #8C7A6B;          
+  text-decoration: none;
+  margin: 0 12px;
+  padding: 8px 16px;
+  border-radius: 6px;
+  transition: background-color 0.3s ease;
+}
+
+.auth-button:hover {
+  background-color: #e0f0ff;
+}
+
+
 /* Mood Cards */
 .mood-cards {
   display: flex;

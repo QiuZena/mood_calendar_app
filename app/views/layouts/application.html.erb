@@ -5,9 +5,6 @@
     <%= javascript_include_tag "application", "data-turbo-track": "reload", defer: true %>
     <%= javascript_importmap_tags %>
 
-    
-
-
     <title>MoodCalendarApp</title>
     <meta name="viewport" content="width=device-width,initial-scale=1">
     <%= csrf_meta_tags %>
@@ -37,7 +34,13 @@
       <% end %>
     </header>
     <div class="container">
-    <%= yield %>
-      </div>
+      <% unless user_signed_in? || devise_controller? %>
+        <div id="auth-banner" style="text-align: center; background-color: #fff8e1; padding: 1rem;">
+          <%= link_to 'Login', new_user_session_path, class: "auth-button" %>
+          <%= link_to 'Sign Up', new_user_registration_path, class: "auth-button" %>
+        </div>
+      <% end %>
+      <%= yield %>
+    </div>
   </body>
 </html>

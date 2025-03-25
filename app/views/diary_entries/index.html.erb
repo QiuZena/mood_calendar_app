@@ -31,17 +31,16 @@
   <% @moods.each do |mood| %>
     <% if current_user %>
       <%= link_to new_diary_entry_path(mood_id: mood.id), class: "mood-card" do %>
-        <%= image_tag asset_path(mood.icon), size: "40x40", alt: mood.name %>
+        <%= image_tag mood.icon, size: "40x40", alt: mood.name %>
         <span><%= mood.name %></span>
       <% end %>
     <% else %>
-      <div class="mood-card" onclick="alert('Please log in or sign up to post your mood.')">
-        <%= image_tag asset_path(mood.icon), size: "40x40", alt: mood.name %>
+      <div class="mood-card" onclick="handleLoginReminder()">
+        <%= image_tag mood.icon, size: "40x40", alt: mood.name %>
         <span><%= mood.name %></span>
       </div>
     <% end %>
   <% end %>
-
 </div>
 
 <% moods = @todays_entries.first(6) %>
@@ -197,3 +196,21 @@
   </div>
 </div>
 
+<script>
+  function handleLoginReminder() {
+    alert("Please log in to share your mood 😊");
+
+    // 滚动到页面顶部
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+
+    // 给顶部提示高亮（可选）
+    const banner = document.getElementById("auth-banner");
+    if (banner) {
+      banner.style.backgroundColor = "#ffebee"; // 粉红提示色
+      banner.style.transition = "background-color 0.5s ease";
+      setTimeout(() => {
+        banner.style.backgroundColor = "#fff8e1"; // 恢复原色
+      }, 1500);
+    }
+  }
+</script>
